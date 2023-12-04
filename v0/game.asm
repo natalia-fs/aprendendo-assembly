@@ -15,6 +15,7 @@
     msg_vitoria_jogador_2: .asciiz "Parabéns, Jogador 2! Você venceu!\n"
     msg_intervalo_invalido: .asciiz "Você só vai acertar se respeitar o intervalo (0 a 20)!\n"
     msg_jogar_novamente: .asciiz "Deseja jogar novamente? (1 para 'SIM', 0 para 'NÃO')\n"
+    msg_finalizacao: .asciiz "Obrigada por jogar!\n"
 
 .text
 main:
@@ -120,5 +121,8 @@ reiniciar:
     jal finalizar
 
 finalizar:
+    li $v0, 4
+    la $a0, msg_finalizacao
+    syscall
     li $v0, 10                # Finalizar o programa
     syscall
