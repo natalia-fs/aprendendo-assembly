@@ -6,13 +6,18 @@
     jogador_2_palpite:      .word 0
     jogar_novamente:        .word 0
 
+    quantidade_vitorias_jogador_1: .word 0
+    quantidade_vitorias_jogador_2: .word 0
+
     # Strings
-    newline:         .asciiz "\n"
+    pular_linha:         .asciiz "\n"
     msg_titulo_jogo: .asciiz "--- Advinhe o numero aleatorio entre 0 e 20! ---\n"
     prompt_jogador_1:          .asciiz "Jogador 1, digite um palpite:\n"
     prompt_jogador_2:          .asciiz "Jogador 2, digite um palpite:\n"
     msg_vitoria_jogador_1: .asciiz "Parabéns, Jogador 1! Você venceu!\n"
     msg_vitoria_jogador_2: .asciiz "Parabéns, Jogador 2! Você venceu!\n"
+    msg_quantidade_vitorias_jogador_1: .asciiz "Quantidade de vitórias de Jogador 1: "
+    msg_quantidade_vitorias_jogador_2: .asciiz "Quantidade de vitórias de Jogador 2: "
     msg_intervalo_invalido: .asciiz "Você só vai acertar se respeitar o intervalo (0 a 20)!\n"
     msg_jogar_novamente: .asciiz "Deseja jogar novamente? (1 para 'SIM', 0 para 'NÃO')\n"
     msg_finalizacao: .asciiz "Obrigada por jogar!\n"
@@ -93,12 +98,30 @@ jogador_1_vitoria:
     li $v0, 4
     la $a0, msg_vitoria_jogador_1
     syscall
+    
+    lw $t0, quantidade_vitorias_jogador_1
+    addi, $t0, $t0, 1
+    sw $t0, quantidade_vitorias_jogador_1
+
+    # li $v0, 1
+    # move $a0, $t0
+    # syscall
+
     j reiniciar
 
 jogador_2_vitoria:
     li $v0, 4
     la $a0, msg_vitoria_jogador_2
     syscall
+
+    lw $t0, quantidade_vitorias_jogador_2
+    addi, $t0, $t0, 1
+    sw $t0, quantidade_vitorias_jogador_2
+
+    # li $v0, 1
+    # move $a0, $t0
+    # syscall
+
     j reiniciar
 
 avisar_intervalo:
@@ -109,6 +132,9 @@ avisar_intervalo:
     jr $ra
 
 reiniciar:
+    jal exibir_quantidade_vitorias_jogador_1
+    jal exibir_quantidade_vitorias_jogador_2
+
     li $v0, 4
     la $a0, msg_jogar_novamente
     syscall
@@ -119,6 +145,38 @@ reiniciar:
 
     beq $v0, 1, main
     jal finalizar
+    
+exibir_quantidade_vitorias_jogador_1:
+    li $v0, 4
+    la $a0, msg_quantidade_vitorias_jogador_1
+    syscall
+
+    li $v0, 1
+    lw $t0, quantidade_vitorias_jogador_1
+    move $a0, $t0
+    syscall
+
+    li $v0, 4
+    la $a0, pular_linha
+    syscall
+
+    jr $ra
+    
+exibir_quantidade_vitorias_jogador_2:
+    li $v0, 4
+    la $a0, msg_quantidade_vitorias_jogador_2
+    syscall
+
+    li $v0, 1
+    lw $t0, quantidade_vitorias_jogador_2
+    move $a0, $t0
+    syscall
+
+    li $v0, 4
+    la $a0, pular_linha
+    syscall
+
+    jr $ra
 
 finalizar:
     li $v0, 4
