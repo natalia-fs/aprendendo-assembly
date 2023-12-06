@@ -24,15 +24,14 @@
 
 .text
 main:
-    # Inicialização
-    li $v0, 4
+    li $v0, 4                   # Inicialização
     la $a0, msg_titulo_jogo
     syscall
 
-    li $a1, 21                      # intervalo de 0 a 20
-    li $v0, 42                      # syscall 42: gera um número aleatório (pseudo-aleatório)
+    li $a1, 21                  # intervalo de 0 a 20
+    li $v0, 42                  # syscall 42: gera um número aleatório (pseudo-aleatório)
     syscall
-    sw $a0, numero_aleatorio        # salva o número aleatório
+    sw $a0, numero_aleatorio    # salva o número aleatório
 
 loop:
     # Loop do jogador 1
@@ -103,10 +102,6 @@ jogador_1_vitoria:
     addi, $t0, $t0, 1
     sw $t0, quantidade_vitorias_jogador_1
 
-    # li $v0, 1
-    # move $a0, $t0
-    # syscall
-
     j reiniciar
 
 jogador_2_vitoria:
@@ -117,10 +112,6 @@ jogador_2_vitoria:
     lw $t0, quantidade_vitorias_jogador_2
     addi, $t0, $t0, 1
     sw $t0, quantidade_vitorias_jogador_2
-
-    # li $v0, 1
-    # move $a0, $t0
-    # syscall
 
     j reiniciar
 
